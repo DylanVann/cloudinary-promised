@@ -1,0 +1,33 @@
+{
+  "name": "cloudinary-promised",
+  "version": "1.0.0",
+  "description": "Wrapper for Cloudinary functions.",
+  "keywords": [
+    "cloudinary",
+    "promised"
+  ],
+  "homepage": "https://github.com/DylanVann/cloudinary-promised#readme",
+  "bugs": {
+    "url": "https://github.com/DylanVann/cloudinary-promised/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DylanVann/cloudinary-promised.git"
+  },
+  "license": "MIT",
+  "author": "Dylan Vann <dylan@dylanvann.com>",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write 'src/**/*.ts' '*.js'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/node": "^10.5.2",
+    "typescript": "^2.9.2"
+  }
+}
