@@ -22,7 +22,7 @@ export const isVideo = (localAbsolutePath: string) => {
 
 const uploadPromised = promisify(cloudinary.v2.uploader.upload)
 
-export const uploadFile = (id: string, localAbsolutePath: string) =>
+export const uploadFile = (id: string, localAbsolutePath: string): Promise<any> =>
     uploadPromised(localAbsolutePath, {
         public_id: id,
         resource_type: isVideo(localAbsolutePath) ? 'video' : 'image',
@@ -30,21 +30,21 @@ export const uploadFile = (id: string, localAbsolutePath: string) =>
 
 const uploadExplicitPromised = promisify(cloudinary.v2.uploader.explicit)
 
-export const getMetadata = (id: string, localAbsolutePath: string) =>
+export const getMetadata = (id: string, localAbsolutePath: string): Promise<any> =>
     uploadExplicitPromised(id, {
         image_metadata: true,
         type: 'upload',
         resource_type: isVideo(localAbsolutePath) ? 'video' : 'image',
     })
 
-export const imageExists = (id: string, config: CloudinaryConfig) => {
+export const imageExists = (id: string, config: CloudinaryConfig): Promise<boolean> => {
     const urlImg = `http://res.cloudinary.com/${
         config.cloud_name
     }/image/upload/${id}`
     return urlExists(urlImg)
 }
 
-export const videoExists = (id: string, config: CloudinaryConfig) => {
+export const videoExists = (id: string, config: CloudinaryConfig): Promise<boolean> => {
     const urlVideo = `http://res.cloudinary.com/${
         config.cloud_name
     }/video/upload/${id}`
@@ -55,7 +55,7 @@ export const fileExists = async (
     id: string,
     localAbsolutePath: string,
     config: CloudinaryConfig,
-) => {
+): Promise<boolean> => {
     if (isVideo(localAbsolutePath)) {
         return videoExists(id, config)
     }
