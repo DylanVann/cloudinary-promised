@@ -1,5 +1,4 @@
 import { promisify } from 'util'
-
 const cloudinary = require('cloudinary')
 const { urlExists } = require('url-exists-promise')
 

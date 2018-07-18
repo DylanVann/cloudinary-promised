@@ -29,5 +29,9 @@
   "devDependencies": {
     "@types/node": "^10.5.2",
     "typescript": "^2.9.2"
+  },
+  "dependencies": {
+    "cloudinary": "^1.11.0",
+    "url-exists-promise": "^1.0.1"
   }
 }
