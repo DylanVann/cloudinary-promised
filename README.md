@@ -11,10 +11,10 @@ interface CloudinaryConfig {
     api_secret: string;
 }
 export declare const isVideo: (localAbsolutePath: string) => boolean;
-export declare const uploadFile: (id: string, localAbsolutePath: string) => any;
-export declare const getMetadata: (id: string, localAbsolutePath: string) => any;
-export declare const imageExists: (id: string, config: CloudinaryConfig) => any;
-export declare const videoExists: (id: string, config: CloudinaryConfig) => any;
-export declare const fileExists: (id: string, localAbsolutePath: string, config: CloudinaryConfig) => Promise<any>;
+export declare const uploadFile: (id: string, localAbsolutePath: string) => Promise<any>;
+export declare const getMetadata: (id: string, localAbsolutePath: string) => Promise<any>;
+export declare const imageExists: (id: string, config: CloudinaryConfig) => Promise<boolean>;
+export declare const videoExists: (id: string, config: CloudinaryConfig) => Promise<boolean>;
+export declare const fileExists: (id: string, localAbsolutePath: string, config: CloudinaryConfig) => Promise<boolean>;
 export declare const uploadOrGetMetadata: (id: string, localAbsolutePath: string, config: CloudinaryConfig) => Promise<any>;
 ```
