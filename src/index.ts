@@ -2,8 +2,8 @@ import { promisify } from 'util'
 const cloudinary = require('cloudinary')
 const { urlExists } = require('url-exists-promise')
 
-// Only supporting mp4 for now.
 const videoExtensions = ['mp4']
+const imageExtensions = ['png', 'jpg']
 
 interface CloudinaryConfig {
     cloud_name: string
@@ -14,6 +14,14 @@ interface CloudinaryConfig {
 export const isVideo = (localAbsolutePath: string) => {
     for (let i = 0; i < videoExtensions.length; i++) {
         const extension = videoExtensions[i]
+        if (localAbsolutePath.endsWith(extension)) return true
+    }
+    return false
+}
+
+export const isImage = (localAbsolutePath: string) => {
+    for (let i = 0; i < imageExtensions.length; i++) {
+        const extension = imageExtensions[i]
         if (localAbsolutePath.endsWith(extension)) return true
     }
     return false
