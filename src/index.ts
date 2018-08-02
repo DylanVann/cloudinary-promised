@@ -1,11 +1,11 @@
-import { promisify } from 'util'
 const cloudinary = require('cloudinary')
-const { urlExists } = require('url-exists-promise')
+import { promisify } from 'util'
+import { urlExists } from 'url-exists-promise'
 
 const videoExtensions = ['mp4']
 const imageExtensions = ['png', 'jpg']
 
-interface CloudinaryConfig {
+export interface CloudinaryOptions {
     cloud_name: string
     api_key: string
     api_secret: string
@@ -32,7 +32,7 @@ const uploadPromised = promisify(cloudinary.v2.uploader.upload)
 export const uploadFile = (
     id: string,
     localAbsolutePath: string,
-    options: any,
+    options: CloudinaryOptions,
 ): Promise<any> =>
     uploadPromised(localAbsolutePath, {
         public_id: id,
@@ -45,7 +45,7 @@ const uploadExplicitPromised = promisify(cloudinary.v2.uploader.explicit)
 export const getMetadata = (
     id: string,
     localAbsolutePath: string,
-    options: any,
+    options: CloudinaryOptions,
 ): Promise<any> =>
     uploadExplicitPromised(id, {
         image_metadata: true,
@@ -56,20 +56,20 @@ export const getMetadata = (
 
 export const imageExists = (
     id: string,
-    config: CloudinaryConfig,
+    options: CloudinaryOptions,
 ): Promise<boolean> => {
     const urlImg = `http://res.cloudinary.com/${
-        config.cloud_name
+        options.cloud_name
     }/image/upload/${id}`
     return urlExists(urlImg)
 }
 
 export const videoExists = (
     id: string,
-    config: CloudinaryConfig,
+    options: CloudinaryOptions,
 ): Promise<boolean> => {
     const urlVideo = `http://res.cloudinary.com/${
-        config.cloud_name
+        options.cloud_name
     }/video/upload/${id}`
     return urlExists(urlVideo)
 }
@@ -77,21 +77,20 @@ export const videoExists = (
 export const fileExists = async (
     id: string,
     localAbsolutePath: string,
-    config: CloudinaryConfig,
+    options: CloudinaryOptions,
 ): Promise<boolean> => {
     if (isVideo(localAbsolutePath)) {
-        return videoExists(id, config)
+        return videoExists(id, options)
     }
-    return imageExists(id, config)
+    return imageExists(id, options)
 }
 
 export const uploadOrGetMetadata = async (
     id: string,
     localAbsolutePath: string,
-    config: CloudinaryConfig,
-    options: any,
+    options: CloudinaryOptions,
 ) => {
-    const exists = await fileExists(id, localAbsolutePath, config)
+    const exists = await fileExists(id, localAbsolutePath, options)
     if (!exists) {
         // Have to upload the image or video
         return uploadFile(id, localAbsolutePath, options)
