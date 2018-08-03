@@ -1,6 +1,6 @@
 const cloudinary = require('cloudinary')
-import { promisify } from 'util'
 import { urlExists } from 'url-exists-promise'
+import { resolve } from 'url'
 
 const videoExtensions = ['mp4']
 const imageExtensions = ['png', 'jpg']
@@ -27,32 +27,46 @@ export const isImage = (localAbsolutePath: string) => {
     return false
 }
 
-const uploadPromised = promisify(cloudinary.v2.uploader.upload)
-
 export const uploadFile = (
     id: string,
     localAbsolutePath: string,
     options: CloudinaryOptions,
 ): Promise<any> =>
-    uploadPromised(localAbsolutePath, {
-        public_id: id,
-        resource_type: isVideo(localAbsolutePath) ? 'video' : 'image',
-        ...options,
-    })
-
-const uploadExplicitPromised = promisify(cloudinary.v2.uploader.explicit)
+    new Promise((resolve, reject) =>
+        cloudinary.v2.uploader.upload(
+            localAbsolutePath,
+            {
+                public_id: id,
+                resource_type: isVideo(localAbsolutePath) ? 'video' : 'image',
+                ...options,
+            },
+            (error: string, result: string) => {
+                if (error) return reject(error)
+                resolve(result)
+            },
+        ),
+    )
 
 export const getMetadata = (
     id: string,
     localAbsolutePath: string,
     options: CloudinaryOptions,
 ): Promise<any> =>
-    uploadExplicitPromised(id, {
-        image_metadata: true,
-        type: 'upload',
-        resource_type: isVideo(localAbsolutePath) ? 'video' : 'image',
-        ...options,
-    })
+    new Promise((resolve, reject) =>
+        cloudinary.v2.uploader.explicit(
+            id,
+            {
+                image_metadata: true,
+                type: 'upload',
+                resource_type: isVideo(localAbsolutePath) ? 'video' : 'image',
+                ...options,
+            },
+            (error: string, result: string) => {
+                if (error) return reject(error)
+                resolve(result)
+            },
+        ),
+    )
 
 export const imageExists = (
     id: string,
