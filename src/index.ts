@@ -1,6 +1,5 @@
 const cloudinary = require('cloudinary')
 import { urlExists } from 'url-exists-promise'
-import { resolve } from 'url'
 
 const videoExtensions = ['mp4']
 const imageExtensions = ['png', 'jpg']
@@ -88,7 +87,7 @@ export const videoExists = (
     return urlExists(urlVideo)
 }
 
-export const fileExists = async (
+export const fileExists = (
     id: string,
     localAbsolutePath: string,
     options: CloudinaryOptions,
@@ -103,13 +102,13 @@ export const uploadOrGetMetadata = async (
     id: string,
     localAbsolutePath: string,
     options: CloudinaryOptions,
-) => {
+): Promise<any> => {
     const exists = await fileExists(id, localAbsolutePath, options)
     if (!exists) {
         // Have to upload the image or video
         return uploadFile(id, localAbsolutePath, options)
     } else {
         // Already uploaded, we just get the metadata
-        return await getMetadata(id, localAbsolutePath, options)
+        return getMetadata(id, localAbsolutePath, options)
     }
 }
